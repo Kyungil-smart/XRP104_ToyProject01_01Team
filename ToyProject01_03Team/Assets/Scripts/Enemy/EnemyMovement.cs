@@ -29,13 +29,24 @@ public class EnemyMovement : MonoBehaviour
     public void StartMove(Vector3 destination)
     {
         _agent.speed = _stats.MoveSpeed;
+        _agent.angularSpeed = _stats.TurnSpeed;
         _agent.isStopped = false;
+        
         _agent.SetDestination(destination);
     }
 
     public void StopMove()
     {
         _agent.isStopped = true;
+    }
+
+    public void Look(Transform target)
+    {
+        transform.rotation = Quaternion.Lerp(
+            transform.rotation,
+            Quaternion.LookRotation(target.position - transform.position),
+            _stats.TurnSpeed * Time.deltaTime * 0.05f
+        );
     }
 
     public void Patrol()
