@@ -10,6 +10,7 @@ public class EnemyController : MonoBehaviour, IDamagable, ITargetable
     private EnemyStats _stats;
     private TargetDetector _targetDetector;
     private EnemyMovement _movement;
+    private EnemyWeapon _weapon;
 
     private void Awake() => Init();
     private void OnEnable() => ConnectEvents();
@@ -17,7 +18,7 @@ public class EnemyController : MonoBehaviour, IDamagable, ITargetable
     private void Update()
     {
         HandleState();
-        HandleMovement();
+        HandleStateAction();
     }
     
     private void OnDisable() => DisconnectEvents();
@@ -28,6 +29,7 @@ public class EnemyController : MonoBehaviour, IDamagable, ITargetable
     {
         _stats = GetComponent<EnemyStats>();
         _movement = GetComponent<EnemyMovement>();
+        _weapon = GetComponent<EnemyWeapon>();
         _targetDetector = GetComponentInChildren<TargetDetector>();
 
         State = EnemyState.Patrol;
@@ -37,22 +39,23 @@ public class EnemyController : MonoBehaviour, IDamagable, ITargetable
     {
         if (State == EnemyState.Chase)
         {
-            float distance = Vector3.Distance(transform.position, Target.position);
-            if (distance <= _stats.AttackRange)
-            {
-                // TODO: Attack 상태로 전환 및 공격 로직
-            }
-            else if (distance >= _stats.MissingRange)
-            {
-                State = EnemyState.Patrol;
-            }
+            float distance = Vector3.Distance(Target.position, transform.position);
+            
+            if (distance <= _stats.AttackRange)         State = EnemyState.Attack;
+            else if (distance >= _stats.MissingRange)   State = EnemyState.Patrol;
+        }
+
+        if (State == EnemyState.Attack)
+        {
+            float distance = Vector3.Distance(Target.position, transform.position);
+
+            if (distance >= _stats.MissingRange) State = EnemyState.Patrol;
+            else if (distance >= _stats.AttackRange) State = EnemyState.Chase;
         }
     }
 
-    private void HandleMovement()
+    private void HandleStateAction()
     {
-        if (State == EnemyState.Attack) return;
-        
         switch (State)
         {
             case EnemyState.Chase: 
@@ -60,6 +63,11 @@ public class EnemyController : MonoBehaviour, IDamagable, ITargetable
                 break;
             case EnemyState.Patrol:
                 _movement.Patrol();
+                break;
+            case EnemyState.Attack:
+                _movement.StopMove();
+                _movement.Look(Target);
+                _weapon.Attack(Target);
                 break;
         }
     }
@@ -96,9 +104,10 @@ public class EnemyController : MonoBehaviour, IDamagable, ITargetable
 
     private void DrawLineToDetectedTarget()
     {
-        if (State != EnemyState.Chase) return;
-        
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, Target.position);
+        if (State == EnemyState.Chase || State == EnemyState.Attack)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, Target.position);
+        }
     }
 }
