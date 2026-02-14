@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TargetDetector : MonoBehaviour
 {
-    public event Action<ITargetable> OnTargetDetected;
+    public event Action<Transform> OnTargetDetected;
     
     [SerializeField] private LayerMask _targetLayer;
     [SerializeField] private int _fovGizmoSegment;
@@ -30,7 +30,12 @@ public class TargetDetector : MonoBehaviour
         StopSearchTarget();
     }
 
-    private void OnDrawGizmos() => DrawArc();
+    private void OnDrawGizmos()
+    {
+        DrawArc(_stats.DetectRange, Color.yellow);
+        DrawArc(_stats.AttackRange, Color.red);
+        DrawArc(_stats.MissingRange, Color.blue);
+    }
 
     private void StartSearchTarget(Collider other)
     {
@@ -74,9 +79,7 @@ public class TargetDetector : MonoBehaviour
                 if (!Physics.Raycast(ray, out hit, distanceToTarget)) continue;
                 if (((1 << hit.transform.gameObject.layer) & _targetLayer) == 0) continue;
 
-                ITargetable target = hit.transform.GetComponent<ITargetable>();
-                
-                OnTargetDetected?.Invoke(target);
+                OnTargetDetected?.Invoke(hit.transform);
                 _coroutine = null;
                 yield break;
             }
@@ -92,23 +95,23 @@ public class TargetDetector : MonoBehaviour
         _coroutine = null;
     }
 
-    private void DrawArc()
+    private void DrawArc(float range, Color color)
     {
         Vector3 planarForward = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
 
         if (planarForward.sqrMagnitude < 0.001f) return;
 
         float halfAngle = _stats.ViewAngle * 0.5f;
-        
-        Gizmos.color = Color.yellow;
+
+        Gizmos.color = color;
         
         Vector3 prevDir = Quaternion.AngleAxis(-halfAngle, Vector3.up) * planarForward;
-        Vector3 prev = transform.position + prevDir * _stats.DetectRange;
+        Vector3 prev = transform.position + prevDir * range;
         
         Vector3 left = Quaternion.Euler(0, -_stats.ViewAngle * 0.5f, 0) * transform.forward;
         Vector3 right = Quaternion.Euler(0, _stats.ViewAngle * 0.5f, 0) * transform.forward;
-        Gizmos.DrawLine(transform.position, transform.position + left * _stats.DetectRange);
-        Gizmos.DrawLine(transform.position, transform.position + right * _stats.DetectRange);
+        Gizmos.DrawLine(transform.position, transform.position + left * range);
+        Gizmos.DrawLine(transform.position, transform.position + right * range);
 
         for (int i = 1; i <= _fovGizmoSegment; i++)
         {
@@ -116,7 +119,7 @@ public class TargetDetector : MonoBehaviour
             float angle = Mathf.Lerp(-halfAngle, halfAngle, t);
             
             Vector3 dir = Quaternion.AngleAxis(angle, Vector3.up) * planarForward;
-            Vector3 cur = transform.position + dir * _stats.DetectRange;
+            Vector3 cur = transform.position + dir * range;
 
             Gizmos.DrawLine(prev, cur);
             prev = cur;
