@@ -10,7 +10,7 @@ public class SceneSingleton<T> : MonoBehaviour where T : SceneSingleton<T>
         {
             if (_instance == null)
             {
-                FindObjectOfType<T>();
+                _instance = FindAnyObjectByType<T>();
             }
             return _instance;
         }
