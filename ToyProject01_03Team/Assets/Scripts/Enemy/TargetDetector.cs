@@ -77,6 +77,8 @@ public class TargetDetector : MonoBehaviour
                 ITargetable target = hit.transform.GetComponent<ITargetable>();
                 
                 OnTargetDetected?.Invoke(target);
+                _coroutine = null;
+                yield break;
             }
         }
     }
