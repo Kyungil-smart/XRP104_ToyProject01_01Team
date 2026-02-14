@@ -15,5 +15,13 @@ public class EnemyController : MonoBehaviour, IDamagable
     public void TakeDamage(float damage)
     {
         _stats.Health.Value -= damage;
+
+        if (_stats.Health.Value <= 0) Die();
+    }
+
+    public void Die()
+    {
+        StopAllCoroutines();
+        Destroy(gameObject);
     }
 }
