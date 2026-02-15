@@ -64,11 +64,11 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.5
+  m_Radius: 2.36
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2726180112642878744
 PrefabInstance:
