@@ -8,4 +8,9 @@ public class GameManager : Singleton<GameManager>
     {
         SingletonInit();
     }
+
+    public void StageClear()
+    {
+        Debug.Log("StageClear");
+    }
 }
