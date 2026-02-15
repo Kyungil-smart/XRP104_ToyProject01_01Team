@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("이동 속도")]
-    [SerializeField] private float _moveSpeed;
+    [SerializeField] public float _moveSpeed;
     
     [Header("회전 속도")]
     [SerializeField] private float _rotSpeed;
