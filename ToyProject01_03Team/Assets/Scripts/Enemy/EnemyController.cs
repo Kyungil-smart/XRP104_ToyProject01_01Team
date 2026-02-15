@@ -14,7 +14,7 @@ public class EnemyController : MonoBehaviour, IDamagable, ITargetable
 
     private void Awake() => Init();
     private void OnEnable() => ConnectEvents();
-    
+    private void Start() => StageInfo.Instance.AddEnemy(this);
     private void Update()
     {
         HandleState();
@@ -89,6 +89,7 @@ public class EnemyController : MonoBehaviour, IDamagable, ITargetable
     public void Die()
     {
         StopAllCoroutines();
+        StageInfo.Instance.RemoveEnemy(this);
         Destroy(gameObject);
     }
 
