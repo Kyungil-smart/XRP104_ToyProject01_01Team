@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     [Header("플레이어 데미지")] 
     [SerializeField] public float playerDamage;
 
+    [Header("공격 쿨타임")] 
+    [SerializeField] public float _attackCD;
+
     [Header("적용 가능한 버프들")]
     [SerializeField] private GameObject[] buffs;
 
@@ -18,12 +21,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int _buffTime;
     [SerializeField] private float _increasedDamage;
     [SerializeField]  private float _speedUp;
+    
+    [Header("총구 위치")]
+    [SerializeField] private GameObject _muzzlePoint;
+    [Header("총알 프리펩")]
+    [SerializeField] private GameObject _playerBulletPrefab;
 
     
     public bool isIncreasedDamage = false;
     public bool isSpeedUp = false;
+    public bool isCanAttack;
     private WaitForSeconds buffTime;
+    private WaitForSeconds AttackCD;
     private PlayerMovement _playerMovement;
+    // private PlayerTarget _playerTarget;
     
     private void Awake()
     {
@@ -33,6 +44,41 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         GetBuffs();
+        
+        // if(움직임이 없고,적이 락온 된 상태라면) 어택
+        if (IsCanAttack())
+        {
+            Attack();
+            StartCoroutine(AttackCDCoroutine());
+            isCanAttack = false;
+        }
+    }
+
+    private bool IsCanAttack()
+    {
+        if (!_playerMovement.isMoving && isCanAttack && Input.GetKeyDown(KeyCode.Space)) // && _playerTarget.isTargetEnemy)
+        {
+            return true;
+        }
+        else return false;
+    }
+
+    private void Attack()
+    {
+        Vector3 bulletPos = GetPos();
+        Quaternion bulletRot = GetRot();
+        bulletPos.y += 2f; 
+        PlayerBulletManager.Instance.ShootBullet(_playerBulletPrefab, bulletPos, bulletRot);
+    }
+    
+    Vector3 GetPos()
+    {
+        return _muzzlePoint.transform.position;
+    }
+    
+    Quaternion GetRot()
+    {
+        return _muzzlePoint.transform.rotation;
     }
 
     private void GetBuffs()
@@ -63,12 +109,21 @@ public class PlayerController : MonoBehaviour
     {
         playerCurrentHP = playerMaxHP;
         _playerMovement = GetComponent<PlayerMovement>();
+        // _playerTarget = FindFirstObjectByType<PlayerTarget>();
         buffTime = new WaitForSeconds(_buffTime);
+        AttackCD = new WaitForSeconds(_attackCD);
+        isCanAttack = true;
     }
 
     public void TakeDamage(float damage)
     {
         playerCurrentHP -= damage;
+    }
+
+    IEnumerator AttackCDCoroutine()
+    {
+        yield return AttackCD;
+        isCanAttack = true;
     }
 
     IEnumerator DamageBuffTimeCoroutine(GameObject buffObject)
