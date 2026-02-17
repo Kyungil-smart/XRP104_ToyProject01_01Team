@@ -9,8 +9,10 @@ public class PlayerTarget : MonoBehaviour
     [SerializeField] private LayerMask _targetLayer;
 
     [SerializeField] private LayerMask _wallLayer;
-    
+
     [SerializeField] private List<Transform> _enemies = new List<Transform>();
+
+    public bool IsTargetEnemy { get; private set; }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -54,6 +56,8 @@ public class PlayerTarget : MonoBehaviour
                 Debug.Log($"<color=green>적 감지: {_target.name}</color>");
             }
         }
+        
+        IsTargetEnemy = _target != null;
     }
 
     private bool IsBlockedByWall(Transform target)
