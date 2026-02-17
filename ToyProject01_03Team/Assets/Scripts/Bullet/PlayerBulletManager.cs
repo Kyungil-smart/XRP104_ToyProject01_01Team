@@ -8,7 +8,6 @@ public class PlayerBulletManager : SceneSingleton<PlayerBulletManager>
 
     [SerializeField] private int _defaultSize;
     
-    // Dictionary<GameObject,Queue<GameObject>> bullets = new Dictionary<GameObject,Queue<GameObject>>();
     private Stack<PlayerBullet> _pool;
     
     
@@ -23,7 +22,7 @@ public class PlayerBulletManager : SceneSingleton<PlayerBulletManager>
         _pool= new Stack<PlayerBullet>(_defaultSize);
     }
 
-    private void ShootBullet(Transform muzzle)
+    public void ShootBullet(Vector3 pos, Quaternion rot)
     {
         PlayerBullet bullet;
         
@@ -31,14 +30,14 @@ public class PlayerBulletManager : SceneSingleton<PlayerBulletManager>
         else                    bullet = _pool.Pop();
         
         bullet.gameObject.SetActive(true);
-        bullet.transform.position = muzzle.position;
-        bullet.transform.rotation = muzzle.rotation;
+        bullet.transform.position = pos;
+        bullet.transform.rotation = rot;
         
         IShootable shootable = bullet as IShootable;
         shootable.OnSpawn();
     }
 
-    private void DespawnBullet(PlayerBullet bullet)
+    public void DespawnBullet(PlayerBullet bullet)
     {
         _pool.Push(bullet);
         bullet.gameObject.SetActive(false);
@@ -50,54 +49,60 @@ public class PlayerBulletManager : SceneSingleton<PlayerBulletManager>
     private PlayerBullet CreateBullet()
     {
         // Bullet 생산
-        // _pool.Push()
-    }
-
-    public GameObject ShootBullet(GameObject bulletPrefab, Vector3 bulletPos, Quaternion bulletRot)
-    {
-        if (!bullets.ContainsKey(bulletPrefab))
-        {
-            bullets.Add(bulletPrefab,new Queue<GameObject>());
-        }
-
-        GameObject bullet;
-
-        if (bullets[bulletPrefab].Count > 0)
-        {
-            bullet = bullets[bulletPrefab].Dequeue();
-        }
-        else
-        {
-            bullet = Instantiate(bulletPrefab, transform);
-            bullet.name = bulletPrefab.name;
-        }
-
-        bullet.transform.position = bulletPos;
-        bullet.transform.rotation = bulletRot;
-        bullet.SetActive(true);
-
-        if (bullet.TryGetComponent(out IShootable shootable))
-        {
-            shootable.OnSpawn();
-        }
+        GameObject newBullet = Instantiate(_bulletPrefab);
+        PlayerBullet bullet = newBullet.GetComponent<PlayerBullet>();
         
+        newBullet.SetActive(false);
+        // _pool.Push()
+        _pool.Push(bullet);
         return bullet;
     }
 
-    public void DespawnBullet(GameObject bulletPrefab, GameObject bullet)
-    {
-        if (!bullets.ContainsKey(bulletPrefab))
-        {
-            bullets.Add(bulletPrefab, new Queue<GameObject>());
-        }
+    // public GameObject hootBullet(GameObject bulletPrefab, Vector3 bulletPos, Quaternion bulletRot)
+    // {
+    //     if (!bullets.ContainsKey(bulletPrefab))
+    //     {
+    //         bullets.Add(bulletPrefab,new Queue<GameObject>());
+    //     }
+    //
+    //     GameObject bullet;
+    //
+    //     if (bullets[bulletPrefab].Count > 0)
+    //     {
+    //         bullet = bullets[bulletPrefab].Dequeue();
+    //     }
+    //     else
+    //     {
+    //         bullet = Instantiate(bulletPrefab, transform);
+    //         bullet.name = bulletPrefab.name;
+    //     }
+    //
+    //     bullet.transform.position = bulletPos;
+    //     bullet.transform.rotation = bulletRot;
+    //     bullet.SetActive(true);
+    //
+    //     if (bullet.TryGetComponent(out IShootable shootable))
+    //     {
+    //         shootable.OnSpawn();
+    //     }
+    //     
+    //     return bullet;
+    // }
 
-        if (bullet.TryGetComponent(out IShootable shootable))
-        {
-            shootable.OnDespawn();
-        }
-        
-        bullet.SetActive(false);
-        
-        bullets[bulletPrefab].Enqueue(bullet);
-    }
+    // public void DespawnBullet(GameObject bulletPrefab, GameObject bullet)
+    // {
+    //     if (!bullets.ContainsKey(bulletPrefab))
+    //     {
+    //         bullets.Add(bulletPrefab, new Queue<GameObject>());
+    //     }
+    //
+    //     if (bullet.TryGetComponent(out IShootable shootable))
+    //     {
+    //         shootable.OnDespawn();
+    //     }
+    //     
+    //     bullet.SetActive(false);
+    //     
+    //     bullets[bulletPrefab].Enqueue(bullet);
+    // }
 }

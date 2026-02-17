@@ -27,7 +27,7 @@ public class PlayerBullet : MonoBehaviour, IShootable
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             Debug.Log("Hit");
-            PlayerBulletManager.Instance.DespawnBullet(_playerBulletPrefab, gameObject);
+            PlayerBulletManager.Instance.DespawnBullet(this);
             _bulletDamage = _playerController.playerDamage;
             _enemyController.TakeDamage(_bulletDamage);
         }
@@ -58,6 +58,6 @@ public class PlayerBullet : MonoBehaviour, IShootable
     IEnumerator bulletCoroutine()
     {
         yield return bulletLifetime;
-        PlayerBulletManager.Instance.DespawnBullet(_playerBulletPrefab,gameObject);
+        PlayerBulletManager.Instance.DespawnBullet(this);
     }
 }

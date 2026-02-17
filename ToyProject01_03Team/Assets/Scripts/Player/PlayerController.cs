@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
         Vector3 bulletPos = GetPos();
         Quaternion bulletRot = GetRot();
         bulletPos.y += 2f; 
-        PlayerBulletManager.Instance.ShootBullet(_playerBulletPrefab, bulletPos, bulletRot);
+        PlayerBulletManager.Instance.ShootBullet(bulletPos, bulletRot);
     }
     
     Vector3 GetPos()

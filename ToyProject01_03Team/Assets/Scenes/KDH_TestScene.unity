@@ -10442,6 +10442,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletPrefab: {fileID: 8073986985017061225, guid: d00e705d16e96fc4dbdddb46d621ecfe, type: 3}
+  _defaultSize: 5
 --- !u!4 &1722128851
 Transform:
   m_ObjectHideFlags: 0
