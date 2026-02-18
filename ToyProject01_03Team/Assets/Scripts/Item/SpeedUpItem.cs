@@ -1,20 +1,23 @@
 using UnityEngine;
 
-public class SpeedUpItem : MonoBehaviour
+public class SpeedUpItem : Itembase
 {
     private PlayerController _playerController;
 
     private void Awake()
     {
         _playerController = FindAnyObjectByType<PlayerController>();
+        Rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             _playerController.isSpeedUp = true;
-            gameObject.SetActive(false);
+            
+            Destroy(gameObject);
+            // gameObject.SetActive(false);
         }
     }
 }
