@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour, IDamagable
 
     private bool IsCanAttack()
     {
-        if (!_playerMovement.isMoving && isCanAttack && _playerTarget.IsTargetEnemy)
+        if (!_playerMovement.isMoving && isCanAttack && _playerTarget.IsTargetEnemy && !IsDie())
         {
             Debug.Log("공격");
             return true;
@@ -140,4 +140,14 @@ public class PlayerController : MonoBehaviour, IDamagable
         _playerMovement._moveSpeed -= _speedUp;
         buffObject.SetActive(false);
     }
+    private bool IsDie()
+    {
+        if(playerCurrentHP <= 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
 }
