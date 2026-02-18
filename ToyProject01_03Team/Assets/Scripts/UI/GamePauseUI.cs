@@ -12,7 +12,7 @@ public class GamePauseUI : MonoBehaviour
 
     private void Awake() => Init();
     private void OnEnable() => SubscribeEvents();
-    private void Start() => Activate();
+    private void Start() => Deactivate();
     private void OnDisable() => UnsubscribeEvents();
     private void OnDestroy() => Dispoase();
 
@@ -57,7 +57,7 @@ public class GamePauseUI : MonoBehaviour
 
     private void Continue()
     {
-        GameManager.Instance.GamePause();
+        GameManager.Instance.GameResume();
         gameObject.SetActive(false);
     }
 

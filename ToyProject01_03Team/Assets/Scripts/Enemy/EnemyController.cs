@@ -90,7 +90,7 @@ public class EnemyController : MonoBehaviour, IDamagable, ITargetable
     {
         StopAllCoroutines();
         StageInfo.Instance.RemoveEnemy(this);
-        DataManager.Instance.DropRandomItem();
+        DataManager.Instance.DropRandomItem(transform);
         gameObject.SetActive(false);
         // Destroy(gameObject);
     }

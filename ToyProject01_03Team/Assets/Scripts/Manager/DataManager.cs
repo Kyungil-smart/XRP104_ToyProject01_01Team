@@ -16,9 +16,11 @@ public class DataManager : Singleton<DataManager>
         Instantiate(StageInfoList[stageIndex]);
     }
 
-    public void DropRandomItem()
+    public void DropRandomItem(Transform dropPoint)
     {
         int index = Random.Range(0, ItembaseList.Count);
-        Instantiate(ItembaseList[index]).Drop();
+        Itembase item = Instantiate(ItembaseList[index], dropPoint.position, Quaternion.identity);
+        item.transform.SetParent(transform);
+        item.Drop();
     }
 }

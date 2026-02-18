@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _rotSpeed;
     
     private Rigidbody _rigidbody;
+    private PlayerController _controller;
     Vector3 _movement = Vector3.zero;
 
     private bool _prevIsMoving;
@@ -19,12 +20,13 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        _controller = GetComponent<PlayerController>();
         _rigidbody = GetComponent<Rigidbody>();
     }
     
     private void FixedUpdate()
     {
-        if (!GameManager.Instance.IsGameRunning) return;
+        if (!_controller.HasPlayerControl) return;
         
         Rotate();
         Move();
@@ -32,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (!GameManager.Instance.IsGameRunning) return;
+        if (!_controller.HasPlayerControl) return;
 
         HandleMovement();
     }

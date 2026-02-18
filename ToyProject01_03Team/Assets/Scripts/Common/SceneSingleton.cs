@@ -20,7 +20,7 @@ public class SceneSingleton<T> : MonoBehaviour where T : SceneSingleton<T>
     {
         if (_instance != null && _instance != this)
         {
-            Destroy(_instance.gameObject);
+            Destroy(gameObject);
         }
         else
         {

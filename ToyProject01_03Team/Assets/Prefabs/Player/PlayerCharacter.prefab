@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 459591349282901702}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.47, y: 0, z: -0.41}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -52,7 +52,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 11.81
+  m_Radius: 9.16
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2409033140554449499
 MonoBehaviour:
@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 7705799086845498221}
   - component: {fileID: 5045785682791017005}
   - component: {fileID: 6912698507826278028}
+  - component: {fileID: -5632287774727127661}
   m_Layer: 6
   m_Name: PlayerCharacter
   m_TagString: Player
@@ -129,7 +130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMaxHP: 100
   playerCurrentHP: 0
-  playerDamage: 5
+  playerDamage: 10
   _attackCD: 0.3
   buffs: []
   _buffTime: 0
@@ -137,6 +138,7 @@ MonoBehaviour:
   _speedUp: 0
   _muzzlePoint: {fileID: 6982837134549286075}
   _playerBulletPrefab: {fileID: 8073986985017061225, guid: d00e705d16e96fc4dbdddb46d621ecfe, type: 3}
+  _bulletManagerPrefab: {fileID: 917105482719698212, guid: 541df180eea723742a5da4f220711374, type: 3}
   isIncreasedDamage: 0
   isSpeedUp: 0
   CanAttack: 0
@@ -239,6 +241,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!114 &-5632287774727127661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457373829014867892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe1daa5e488ef90428891330b804834f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _offset: {x: 0, y: 9, z: -7}
+  _angle: 42.7
 --- !u!1 &4270084288132796423
 GameObject:
   m_ObjectHideFlags: 0

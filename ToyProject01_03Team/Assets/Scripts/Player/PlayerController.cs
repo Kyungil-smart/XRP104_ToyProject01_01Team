@@ -28,7 +28,8 @@ public class PlayerController : MonoBehaviour, IDamagable
     [SerializeField] private GameObject _muzzlePoint;
     [Header("총알 프리펩")]
     [SerializeField] private GameObject _playerBulletPrefab;
-
+    [FormerlySerializedAs("_bulletManager")] [SerializeField] private PlayerBulletManager _bulletManagerPrefab;
+    
     
     public bool isIncreasedDamage = false;
     public bool isSpeedUp = false;
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     private WaitForSeconds AttackCD;
     private PlayerMovement _playerMovement;
     private PlayerTarget _playerTarget;
+    
 
     public event Action OnFire;
     public event Action OnDeath;
@@ -55,6 +57,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         GameManager.Instance.OnGameOver += DeactivatePlayerControl;
         GameManager.Instance.OnGamePause += DeactivatePlayerControl;
         GameManager.Instance.OnGameResume += ActivatePlayerControl;
+        GameManager.Instance.OnStageClear += DeactivatePlayerControl;
     }
 
     private void Update()
@@ -76,6 +79,7 @@ public class PlayerController : MonoBehaviour, IDamagable
         GameManager.Instance.OnGameOver -= DeactivatePlayerControl;
         GameManager.Instance.OnGamePause -= DeactivatePlayerControl;
         GameManager.Instance.OnGameResume -= ActivatePlayerControl;
+        GameManager.Instance.OnStageClear += DeactivatePlayerControl;
     }
 
     private void ActivatePlayerControl()
@@ -150,6 +154,11 @@ public class PlayerController : MonoBehaviour, IDamagable
         AttackCD = new WaitForSeconds(_attackCD);
         CanAttack = true;
         IsDead = false;
+
+        if (PlayerBulletManager.Instance == null)
+        {
+            Instantiate(_bulletManagerPrefab);
+        }
     }
 
     public void TakeDamage(float damage)

@@ -1,3 +1,4 @@
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,6 +20,8 @@ public class StageInfo : SceneSingleton<StageInfo>
     {
         SceneSingletonInit();
         Init();
+        
+        GameManager.Instance.GameStart();
     }
     
     private void Start() => GameManager.Instance.GameStart();

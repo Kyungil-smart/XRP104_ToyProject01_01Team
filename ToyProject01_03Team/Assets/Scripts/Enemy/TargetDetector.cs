@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using FOVMapping;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(FOVAgent))]
 public class TargetDetector : MonoBehaviour
@@ -9,6 +10,7 @@ public class TargetDetector : MonoBehaviour
     public event Action<Transform> OnTargetDetected;
     
     [SerializeField] private LayerMask _targetLayer;
+    [FormerlySerializedAs("_MapLayer")] [SerializeField] private LayerMask _mapLayer;
     [SerializeField] private int _fovGizmoSegment;
     
     private Coroutine _coroutine;
@@ -81,10 +83,12 @@ public class TargetDetector : MonoBehaviour
                 Ray ray = new Ray(transform.position, directionToTarget);
                 RaycastHit hit;
 
-                if (!Physics.Raycast(ray, out hit, distanceToTarget)) continue;
-                if (((1 << hit.transform.gameObject.layer) & _targetLayer) == 0) continue;
-
-                OnTargetDetected?.Invoke(hit.transform);
+                if (Physics.Raycast(ray, out hit, distanceToTarget, _mapLayer))
+                {
+                    continue;
+                }
+                
+                OnTargetDetected?.Invoke(_target.transform);
                 _coroutine = null;
                 yield break;
             }
