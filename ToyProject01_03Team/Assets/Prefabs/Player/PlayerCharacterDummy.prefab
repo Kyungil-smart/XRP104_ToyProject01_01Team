@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3951990566521908249}
   - component: {fileID: 1769885361109432611}
   - component: {fileID: 2767596698417971512}
+  - component: {fileID: 6490470810899116539}
   m_Layer: 6
   m_Name: PlayerCharacterDummy
   m_TagString: Untagged
@@ -81,7 +82,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetRange: 10
-  _target: {fileID: 0}
   _targetLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -139,12 +139,17 @@ MonoBehaviour:
   playerMaxHP: 100
   playerCurrentHP: 100
   playerDamage: 10
+  _attackCD: 0
   buffs: []
   _buffTime: 0
   _increasedDamage: 0
   _speedUp: 0
+  _muzzlePoint: {fileID: 0}
+  _playerBulletPrefab: {fileID: 0}
   isIncreasedDamage: 0
   isSpeedUp: 0
+  CanAttack: 0
+  IsDead: 0
 --- !u!54 &1769885361109432611
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -184,6 +189,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aef613a4b0868e4ab236e91da04e230, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6490470810899116539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124015397354931752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe1daa5e488ef90428891330b804834f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _offset: {x: 0, y: 9, z: -7}
+  _angle: 42.7
 --- !u!1 &184904395592139994
 GameObject:
   m_ObjectHideFlags: 0
@@ -1986,7 +2005,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetRange: 8
-  _target: {fileID: 0}
   _targetLayer:
     serializedVersion: 2
     m_Bits: 128

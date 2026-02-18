@@ -14,7 +14,7 @@ public class PlayerBullet : MonoBehaviour, IShootable
     private float _bulletDamage;
     private Rigidbody _rigidbody;
     private PlayerController _playerController;
-    private EnemyController _enemyController;
+    // private EnemyController _enemyController;
     private WaitForSeconds bulletLifetime;
 
     private void Awake()
@@ -26,17 +26,22 @@ public class PlayerBullet : MonoBehaviour, IShootable
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            Debug.Log("Hit");
             PlayerBulletManager.Instance.DespawnBullet(this);
-            _bulletDamage = _playerController.playerDamage;
-            _enemyController.TakeDamage(_bulletDamage);
+            
+            IDamagable damagable = other.gameObject.GetComponent<IDamagable>();
+            if(damagable != null) damagable.TakeDamage(_bulletDamage);
+
+            /*
+            EnemyController enemy = other.gameObject.GetComponent<EnemyController>();
+            enemy.TakeDamage(_bulletDamage);
+            */
         }
     }
 
     private void Init()
     {
         _playerController = FindAnyObjectByType<PlayerController>();
-        _enemyController = FindAnyObjectByType<EnemyController>();
+        // _enemyController = FindAnyObjectByType<EnemyController>();
         _rigidbody = GetComponent<Rigidbody>();
         bulletLifetime = new WaitForSeconds(_bulletLifeTime);
     }

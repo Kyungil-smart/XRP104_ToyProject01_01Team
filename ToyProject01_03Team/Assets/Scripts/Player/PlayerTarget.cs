@@ -90,13 +90,14 @@ public class PlayerTarget : MonoBehaviour
         // 리스트에 아무것도 안들어있거나, 리스트가 null이라면?
         if(_enemies.Count == 0 || _enemies == null) return null;
 
-        // 리스트에 들어있는 첫 번째 몬스터와 거리를 미리 계산
-        Transform closest = _enemies[0];
-        float distance = Vector3.Distance(_enemies[0].position, transform.position);
+        Transform closest = null;
+        
+        float distance = float.MaxValue;
 
-        // 두번째 몬스터 부터 비교
-        for(int i = 1; i < _enemies.Count; i++)
+        // 첫번째 몬스터 부터 비교
+        for(int i = 0; i < _enemies.Count; i++)
         {
+            if(_enemies[i] == null || !_enemies[i].gameObject.activeSelf) continue;
             // 현재(i번째) 몬스터의 거리 계산
             float currentDistance = Vector3.Distance(_enemies[i].position, transform.position);
 
