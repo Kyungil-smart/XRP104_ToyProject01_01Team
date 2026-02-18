@@ -90,7 +90,8 @@ public class EnemyController : MonoBehaviour, IDamagable, ITargetable
     {
         StopAllCoroutines();
         StageInfo.Instance.RemoveEnemy(this);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        // Destroy(gameObject);
     }
 
     private void ConnectEvents()

@@ -3064,7 +3064,7 @@ PrefabInstance:
     - target: {fileID: 4258206952046894369, guid: 73f1b09641b64be45bdb9da2491b4719, type: 3}
       propertyPath: FOVMapArray
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 18700000, guid: cc5ed2286e29f7f41bb60db68a622f26, type: 2}
     - target: {fileID: 4762034435052011058, guid: 73f1b09641b64be45bdb9da2491b4719, type: 3}
       propertyPath: m_Name
       value: FOWPlaneURP
