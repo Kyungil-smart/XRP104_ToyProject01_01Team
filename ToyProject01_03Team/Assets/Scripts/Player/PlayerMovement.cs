@@ -10,38 +10,65 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _rotSpeed;
     
     private Rigidbody _rigidbody;
-    Vector3 _dir = Vector3.zero;
-    
-    public bool isMoving => _dir != Vector3.zero;
+    Vector3 _movement = Vector3.zero;
+
+    private bool _prevIsMoving;
+    public bool IsMoving { get; private set; }
+
+    public event Action<float> OnMove;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
     }
-
-    private void Update()
-    {
-        Rotate();
-    }
-
+    
     private void FixedUpdate()
     {
+        if (!GameManager.Instance.IsGameRunning) return;
+        
+        Rotate();
         Move();
     }
 
+    private void Update()
+    {
+        if (!GameManager.Instance.IsGameRunning) return;
+
+        HandleMovement();
+    }
+    
     private void Rotate()
     {
-        _dir.x = Input.GetAxisRaw("Horizontal");
-        _dir.z = Input.GetAxisRaw("Vertical");
+        if (!IsMoving) return;
         
-        if (_dir != Vector3.zero)
-        {
-            transform.forward = _dir;
-        }
+        transform.forward = _movement;
     }
 
     private void Move()
     {
-        _rigidbody.MovePosition(_rigidbody.position + _dir * _moveSpeed * Time.fixedDeltaTime);
+        if (!IsMoving)
+        {
+            _rigidbody.linearVelocity = Vector3.zero;
+            return;
+        }
+
+        _rigidbody.MovePosition(_rigidbody.position + _movement * _moveSpeed * Time.fixedDeltaTime);
+    }
+
+    private void HandleMovement()
+    {
+        _prevIsMoving = IsMoving;
+        
+        _movement.x = Input.GetAxisRaw("Horizontal");
+        _movement.z = Input.GetAxisRaw("Vertical");
+        
+        _movement.Normalize();
+
+        IsMoving = _movement != Vector3.zero;
+
+        if (IsMoving != _prevIsMoving)
+        {
+            OnMove?.Invoke(_movement.magnitude);
+        }
     }
 }

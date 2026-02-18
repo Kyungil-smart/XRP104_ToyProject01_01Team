@@ -26,9 +26,9 @@ public class PlayerAnimController : MonoBehaviour
         speed = 0;
         
         _animator.SetFloat("MoveSpeed", speed);
-        _animator.SetBool("isAim", _playerTarget.IsTargetEnemy && speed == 0 && !_isDie);
+        _animator.SetBool("isAim", _playerTarget.IsDetectedEnemy && speed == 0 && !_isDie);
 
-        if(_playerTarget.IsTargetEnemy && speed == 0 && !_isDie)
+        if(_playerTarget.IsDetectedEnemy && speed == 0 && !_isDie)
         {
             _animator.SetTrigger("Fire");
         }

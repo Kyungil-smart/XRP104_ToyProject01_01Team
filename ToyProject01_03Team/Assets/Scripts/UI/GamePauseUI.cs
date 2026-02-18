@@ -12,7 +12,7 @@ public class GamePauseUI : MonoBehaviour
 
     private void Awake() => Init();
     private void OnEnable() => SubscribeEvents();
-    private void Start() => Activate(false);
+    private void Start() => Activate();
     private void OnDisable() => UnsubscribeEvents();
     private void OnDestroy() => Dispoase();
 
@@ -33,11 +33,16 @@ public class GamePauseUI : MonoBehaviour
         _continueButton.onClick.RemoveListener(Continue);
     }
 
-    private void Activate(bool isActive)
+    private void Activate()
     {
-        gameObject.SetActive(isActive);
+        gameObject.SetActive(true);
         
-        if(isActive) RefreshElapsedTimeText();
+        RefreshElapsedTimeText();
+    }
+
+    private void Deactivate()
+    {
+        gameObject.SetActive(false);
     }
 
     private void RefreshElapsedTimeText()
@@ -52,7 +57,7 @@ public class GamePauseUI : MonoBehaviour
 
     private void Continue()
     {
-        GameManager.Instance.GamePause(false);
+        GameManager.Instance.GamePause();
         gameObject.SetActive(false);
     }
 

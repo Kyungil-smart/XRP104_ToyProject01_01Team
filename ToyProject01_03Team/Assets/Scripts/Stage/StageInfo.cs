@@ -27,7 +27,7 @@ public class StageInfo : SceneSingleton<StageInfo>
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            GameManager.Instance.GamePause(true);
+            GameManager.Instance.GamePause();
         }
     }
 
