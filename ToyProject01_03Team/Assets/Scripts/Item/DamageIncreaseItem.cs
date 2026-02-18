@@ -2,21 +2,23 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class DamageIncreaseItem : MonoBehaviour
+public class DamageIncreaseItem : Itembase
 {
     private PlayerController _playerController;
 
     private void Awake()
     {
         _playerController = FindAnyObjectByType<PlayerController>();
+        Rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             _playerController.isIncreasedDamage = true;
-            gameObject.SetActive(false);
+            Destroy(gameObject);
+            // gameObject.SetActive(false);
         }
     }
 }

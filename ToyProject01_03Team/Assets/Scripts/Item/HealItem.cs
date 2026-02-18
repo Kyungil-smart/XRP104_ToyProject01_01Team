@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class HealItem : MonoBehaviour
+public class HealItem : Itembase
 {
     [Header("아이템 획득 시 회복량")]
     [SerializeField] private float _healAmount;
@@ -10,11 +10,12 @@ public class HealItem : MonoBehaviour
     private void Awake()
     {
         _playerController = FindAnyObjectByType<PlayerController>();
+        Rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("Healing");
             _playerController.playerCurrentHP += _healAmount;
@@ -23,7 +24,8 @@ public class HealItem : MonoBehaviour
                 _playerController.playerCurrentHP = _playerController.playerMaxHP;
             }
             
-            gameObject.SetActive(false);
+            Destroy(gameObject);
+            // gameObject.SetActive(false);
         }
     }
     

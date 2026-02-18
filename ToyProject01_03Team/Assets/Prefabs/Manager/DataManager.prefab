@@ -46,3 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <StageInfoList>k__BackingField:
   - {fileID: 5516892725271644748, guid: d36ead35be01ab04bac560af10aeb361, type: 3}
+  - {fileID: 5516892725271644748, guid: a01b43d8cda25864f9e1f6d3086474a6, type: 3}
+  <ItembaseList>k__BackingField:
+  - {fileID: 7761734288926968381, guid: 0915c90299344f0428ccbe5146a88ca4, type: 3}
+  - {fileID: 4453065063371924128, guid: 13bdc88ae34b72f47800c79a26f8cdc4, type: 3}
+  - {fileID: 2157591303596060368, guid: bbc4e74defccf264fafa2767e1b906fa, type: 3}
