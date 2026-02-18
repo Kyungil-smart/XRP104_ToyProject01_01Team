@@ -887,7 +887,7 @@ PrefabInstance:
     - target: {fileID: 5792204023923890976, guid: c3201cc74e08ca44e8737623e6998106, type: 3}
       propertyPath: FOVMapArray
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 18700000, guid: cc5ed2286e29f7f41bb60db68a622f26, type: 2}
     - target: {fileID: 5794709903425175597, guid: c3201cc74e08ca44e8737623e6998106, type: 3}
       propertyPath: m_Layer
       value: 8

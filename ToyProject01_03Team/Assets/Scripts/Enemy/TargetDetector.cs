@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using FOVMapping;
 using UnityEngine;
 
+[RequireComponent(typeof(FOVAgent))]
 public class TargetDetector : MonoBehaviour
 {
     public event Action<Transform> OnTargetDetected;
@@ -15,8 +17,11 @@ public class TargetDetector : MonoBehaviour
     
     [SerializeField] private EnemyStats _stats;
     private SphereCollider _collider;
+    private FOVAgent _fovAgent;
 
     private void Awake() => Init();
+    private void OnEnable() => SetFovAgent(true);
+    private void OnDisable() => SetFovAgent(false);
 
     private void OnTriggerEnter(Collider other)
     {
@@ -90,9 +95,24 @@ public class TargetDetector : MonoBehaviour
     {
         _stats = GetComponentInParent<EnemyStats>();
         _collider = GetComponent<SphereCollider>();
+        _fovAgent = GetComponent<FOVAgent>();
         
         _collider.radius = _stats.DetectRange;
         _coroutine = null;
+    }
+
+    private void SetFovAgent(bool isSet)
+    {
+        if (isSet)
+        {
+            _fovAgent.sightAngle = _stats.ViewAngle;
+            _fovAgent.sightRange = _stats.DetectRange;
+        }
+        else
+        {
+            _fovAgent.sightAngle = 0;
+            _fovAgent.sightRange = 0;
+        }
     }
 
     private void DrawArc(float range, Color color)
