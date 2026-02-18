@@ -1,26 +1,29 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerTarget : MonoBehaviour
 {
     [SerializeField] private float targetRange;
-    [SerializeField] private Transform _target;
+
     [SerializeField] private LayerMask _targetLayer;
 
     [SerializeField] private LayerMask _wallLayer;
 
     [SerializeField] private List<Transform> _enemies = new List<Transform>();
 
-    public bool IsTargetEnemy { get; private set; }
+    public Transform Target { get; private set; }
+    public bool IsDetectedEnemy { get; private set; }
+
+    public event Action<bool> OnDetectedTargetInRange;
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Enemy"))
         {
             _enemies.Add(other.transform);
-
-            Debug.Log($"적 감지: {other.name}");
         }
     }
 
@@ -29,37 +32,35 @@ public class PlayerTarget : MonoBehaviour
         if(other.CompareTag("Enemy"))
         {
             _enemies.Remove(other.transform);
-
-            Debug.Log($"적 범위 이탈: {other.name}");
         }
     }
 
     private void FixedUpdate()
     {
+        if (!GameManager.Instance.IsGameRunning) return;
+
         if(_enemies != null && _enemies.Count > 0)
         {
-            _target = GetClosestEnemies();
+            Target = GetClosestEnemies();
         }
         else
         {
-            _target = null;
+            Target = null;
         }
+        
+        OnDetectedTargetInRange?.Invoke(Target != null);
 
-        if(_target != null)
+        if(Target != null)
         {
-            if(IsBlockedByWall(_target))
+            if(IsBlockedByWall(Target))
             {
-                Debug.Log("<color=red>벽에 가려짐</color>");
-            }
-            else
-            {
-                Debug.Log($"<color=green>적 감지: {_target.name}</color>");
+                Target = null;
             }
         }
         
-        IsTargetEnemy = _target != null;
+        IsDetectedEnemy = Target != null;
     }
-
+    
     private bool IsBlockedByWall(Transform target)
     {
         Vector3 direction = target.position - transform.position;
@@ -68,27 +69,19 @@ public class PlayerTarget : MonoBehaviour
         Ray ray = new Ray(transform.position, direction.normalized);
         RaycastHit hit;
 
-        if(Physics.Raycast(ray, out hit, distance))
+        if(Physics.Raycast(ray, out hit, distance, _wallLayer))
         {
-           if(hit.collider.gameObject.CompareTag("Enemy"))
-           {
-               return false;
-           }
-           else
-            {
-                return true;
-            }
+            return true;
         }
-        return true; // 일단 몬스터를 감지하지는 못함
-        
+        return false;
     }
 
     private void OnDrawGizmos()
     {
-        if(_target != null)
+        if(Target != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, _target.position);
+            Gizmos.DrawLine(transform.position, Target.position);
         }
     }
 

@@ -5,7 +5,8 @@ public class GameManager : Singleton<GameManager>
 {
     [field: SerializeField] public int CurrentStage { get; set; }
     public event Action OnGameStart;
-    public event Action<bool> OnGamePause;
+    public event Action OnGamePause;
+    public event Action OnGameResume;
     public event Action OnStageClear;
     public event Action OnGameOver;
 
@@ -27,12 +28,20 @@ public class GameManager : Singleton<GameManager>
         OnGameStart?.Invoke();
     }
 
-    public void GamePause(bool isPaused)
+    public void GamePause()
     {
         if (!IsGameRunning) return;
         
-        IsGamePaused = isPaused;
-        OnGamePause?.Invoke(isPaused);
+        IsGamePaused = true;
+        OnGamePause?.Invoke();
+    }
+
+    public void GameResume()
+    {
+        if (!IsGameRunning) return;
+        
+        IsGamePaused = false;
+        OnGameResume?.Invoke();
     }
 
     public void GameOver()

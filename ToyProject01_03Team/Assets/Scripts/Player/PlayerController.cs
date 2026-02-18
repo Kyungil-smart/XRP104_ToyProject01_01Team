@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour, IDamagable
 {
@@ -30,45 +32,79 @@ public class PlayerController : MonoBehaviour, IDamagable
     
     public bool isIncreasedDamage = false;
     public bool isSpeedUp = false;
-    public bool isCanAttack;
+    [FormerlySerializedAs("isCanAttack")] public bool CanAttack;
     private WaitForSeconds buffTime;
     private WaitForSeconds AttackCD;
     private PlayerMovement _playerMovement;
     private PlayerTarget _playerTarget;
-    
+
+    public event Action OnFire;
+    public event Action OnDeath;
+    public bool IsDead;
+
+    public bool HasPlayerControl { get; private set; }
+
     private void Awake()
     {
         Init();
     }
 
+    private void OnEnable()
+    {
+        GameManager.Instance.OnGameStart += ActivatePlayerControl;
+        GameManager.Instance.OnGameOver += DeactivatePlayerControl;
+        GameManager.Instance.OnGamePause += DeactivatePlayerControl;
+        GameManager.Instance.OnGameResume += ActivatePlayerControl;
+    }
+
     private void Update()
     {
+        if (!HasPlayerControl) return;
+        
         GetBuffs();
         
         // if(움직임이 없고,적이 락온 된 상태라면) 어택
-        if (IsCanAttack())
+        if (IsCanAttackState())
         {
             Attack();
-            StartCoroutine(AttackCDCoroutine());
-            isCanAttack = false;
         }
     }
 
-    private bool IsCanAttack()
+    private void OnDisable()
     {
-        if (!_playerMovement.isMoving && isCanAttack && _playerTarget.IsTargetEnemy && !IsDie())
-        {
-            Debug.Log("공격");
-            return true;
-        }
-        else return false;
+        GameManager.Instance.OnGameStart -= ActivatePlayerControl;
+        GameManager.Instance.OnGameOver -= DeactivatePlayerControl;
+        GameManager.Instance.OnGamePause -= DeactivatePlayerControl;
+        GameManager.Instance.OnGameResume -= ActivatePlayerControl;
+    }
+
+    private void ActivatePlayerControl()
+    {
+        HasPlayerControl = true;
+    }
+
+    private void DeactivatePlayerControl()
+    {
+        HasPlayerControl = false;
+    }
+
+    private bool IsCanAttackState()
+    {
+        return !_playerMovement.IsMoving && _playerTarget.IsDetectedEnemy;
     }
 
     private void Attack()
     {
+        if (!CanAttack) return;
+        
+        transform.rotation = Quaternion.LookRotation(_playerTarget.Target.transform.position- transform.position);
         Vector3 bulletPos = GetPos();
         Quaternion bulletRot = GetRot(); 
         PlayerBulletManager.Instance.ShootBullet(bulletPos, bulletRot);
+        OnFire?.Invoke();
+
+        StartCoroutine(AttackCDCoroutine());
+        CanAttack = false;
     }
     
     Vector3 GetPos()
@@ -109,21 +145,24 @@ public class PlayerController : MonoBehaviour, IDamagable
     {
         playerCurrentHP = playerMaxHP;
         _playerMovement = GetComponent<PlayerMovement>();
-        _playerTarget = FindFirstObjectByType<PlayerTarget>();
+        _playerTarget = GetComponentInChildren<PlayerTarget>();
         buffTime = new WaitForSeconds(_buffTime);
         AttackCD = new WaitForSeconds(_attackCD);
-        isCanAttack = true;
+        CanAttack = true;
+        IsDead = false;
     }
 
     public void TakeDamage(float damage)
     {
         playerCurrentHP -= damage;
+
+        if (playerCurrentHP <= 0) Die();
     }
 
     IEnumerator AttackCDCoroutine()
     {
         yield return AttackCD;
-        isCanAttack = true;
+        CanAttack = true;
     }
 
     IEnumerator DamageBuffTimeCoroutine(GameObject buffObject)
@@ -140,14 +179,13 @@ public class PlayerController : MonoBehaviour, IDamagable
         _playerMovement._moveSpeed -= _speedUp;
         buffObject.SetActive(false);
     }
-    private bool IsDie()
+    
+    private void Die()
     {
-        if(playerCurrentHP <= 0)
-        {
-            return true;
-        }
-
-        return false;
+        if(IsDead) return;
+        
+        IsDead = true;
+        OnDeath?.Invoke();
+        GameManager.Instance.GameOver();
     }
-
 }

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7339122226993690457}
   - component: {fileID: 8583357019519859232}
+  - component: {fileID: 2409033140554449499}
   m_Layer: 0
   m_Name: TargetDetector
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 459591349282901702}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.47, y: 0, z: -0.41}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -51,8 +52,28 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 8
+  m_Radius: 11.81
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2409033140554449499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459591349282901702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b23d464b087891443a305f1da82b7402, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetRange: 8
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  _wallLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  _enemies: []
 --- !u!1 &1457373829014867892
 GameObject:
   m_ObjectHideFlags: 0
@@ -64,14 +85,13 @@ GameObject:
   - component: {fileID: 6996956620303392829}
   - component: {fileID: 3954086740596800452}
   - component: {fileID: 700410115109605096}
-  - component: {fileID: 2828779134215314453}
-  - component: {fileID: 6438387222632103772}
+  - component: {fileID: 549807795784126463}
   - component: {fileID: 7705799086845498221}
   - component: {fileID: 5045785682791017005}
   - component: {fileID: 6912698507826278028}
   m_Layer: 6
-  m_Name: PlayerCharacterPrototype
-  m_TagString: Untagged
+  m_Name: PlayerCharacter
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -107,19 +127,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27c45f5c38f1a6741b7f184db85b96a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMaxHP: 0
+  playerMaxHP: 100
   playerCurrentHP: 0
-  playerDamage: 0
-  _attackCD: 0
+  playerDamage: 5
+  _attackCD: 0.3
   buffs: []
   _buffTime: 0
   _increasedDamage: 0
   _speedUp: 0
-  _muzzlePoint: {fileID: 0}
-  _playerBulletPrefab: {fileID: 0}
+  _muzzlePoint: {fileID: 6982837134549286075}
+  _playerBulletPrefab: {fileID: 8073986985017061225, guid: d00e705d16e96fc4dbdddb46d621ecfe, type: 3}
   isIncreasedDamage: 0
   isSpeedUp: 0
-  isCanAttack: 0
+  CanAttack: 0
+  IsDead: 0
 --- !u!114 &700410115109605096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,9 +153,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4620e3e729d110a47adae7616e71cce8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 0
-  _rotSpeed: 0
---- !u!114 &2828779134215314453
+  _moveSpeed: 10
+  _rotSpeed: 150
+--- !u!114 &549807795784126463
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,28 +164,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1457373829014867892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b23d464b087891443a305f1da82b7402, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetRange: 0
-  _target: {fileID: 0}
-  _targetLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  _wallLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  _enemies: []
---- !u!114 &6438387222632103772
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1457373829014867892}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0aef613a4b0868e4ab236e91da04e230, type: 3}
+  m_Script: {fileID: 11500000, guid: f9f723eaa605cd042ae04336f34b8f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!95 &7705799086845498221
@@ -177,7 +177,7 @@ Animator:
   m_GameObject: {fileID: 1457373829014867892}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 860793eb3324391468f1c120a75ec049, type: 3}
-  m_Controller: {fileID: 9100000, guid: 75e80b2e38eac3e45b0983519eae2b20, type: 2}
+  m_Controller: {fileID: 9100000, guid: a72e981a358944a4b9b70415102afe29, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -208,10 +208,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
+  m_Radius: 0.7
+  m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!54 &6912698507826278028
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -234,7 +234,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 116
