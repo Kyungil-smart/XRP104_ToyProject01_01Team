@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamagable
 {
     [Header("플레이어 체력")]
     [SerializeField] public float playerMaxHP;
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     private WaitForSeconds buffTime;
     private WaitForSeconds AttackCD;
     private PlayerMovement _playerMovement;
-    // private PlayerTarget _playerTarget;
+    private PlayerTarget _playerTarget;
     
     private void Awake()
     {
@@ -56,8 +56,9 @@ public class PlayerController : MonoBehaviour
 
     private bool IsCanAttack()
     {
-        if (!_playerMovement.isMoving && isCanAttack && Input.GetKeyDown(KeyCode.Space)) // && _playerTarget.isTargetEnemy)
+        if (!_playerMovement.isMoving && isCanAttack && _playerTarget.IsTargetEnemy && !IsDie())
         {
+            Debug.Log("공격");
             return true;
         }
         else return false;
@@ -66,8 +67,7 @@ public class PlayerController : MonoBehaviour
     private void Attack()
     {
         Vector3 bulletPos = GetPos();
-        Quaternion bulletRot = GetRot();
-        bulletPos.y += 2f; 
+        Quaternion bulletRot = GetRot(); 
         PlayerBulletManager.Instance.ShootBullet(bulletPos, bulletRot);
     }
     
@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour
     {
         playerCurrentHP = playerMaxHP;
         _playerMovement = GetComponent<PlayerMovement>();
-        // _playerTarget = FindFirstObjectByType<PlayerTarget>();
+        _playerTarget = FindFirstObjectByType<PlayerTarget>();
         buffTime = new WaitForSeconds(_buffTime);
         AttackCD = new WaitForSeconds(_attackCD);
         isCanAttack = true;
@@ -140,4 +140,14 @@ public class PlayerController : MonoBehaviour
         _playerMovement._moveSpeed -= _speedUp;
         buffObject.SetActive(false);
     }
+    private bool IsDie()
+    {
+        if(playerCurrentHP <= 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
 }

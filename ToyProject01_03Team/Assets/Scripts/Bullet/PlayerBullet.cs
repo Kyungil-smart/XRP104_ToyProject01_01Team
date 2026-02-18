@@ -35,8 +35,8 @@ public class PlayerBullet : MonoBehaviour, IShootable
 
     private void Init()
     {
-        _playerController = FindFirstObjectByType<PlayerController>();
-        _enemyController = FindFirstObjectByType<EnemyController>();
+        _playerController = FindAnyObjectByType<PlayerController>();
+        _enemyController = FindAnyObjectByType<EnemyController>();
         _rigidbody = GetComponent<Rigidbody>();
         bulletLifetime = new WaitForSeconds(_bulletLifeTime);
     }

@@ -26,9 +26,9 @@ public class PlayerAnimController : MonoBehaviour
         speed = 0;
         
         _animator.SetFloat("MoveSpeed", speed);
-        _animator.SetBool("isAim", _playerTarget.IsTargetEnemy && speed == 0);
+        _animator.SetBool("isAim", _playerTarget.IsTargetEnemy && speed == 0 && !_isDie);
 
-        if(_playerTarget.IsTargetEnemy && speed == 0)
+        if(_playerTarget.IsTargetEnemy && speed == 0 && !_isDie)
         {
             _animator.SetTrigger("Fire");
         }
@@ -36,9 +36,9 @@ public class PlayerAnimController : MonoBehaviour
         if(_playerController.playerCurrentHP <= 0 && !_isDie)
         {
             _isDie = true;
-            _animator.SetBool("isDie",true);
+            _animator.SetBool("isDie", true);
+            Destroy(gameObject, 1f);
             return;
-        } 
+        }
     }
-    
 }
