@@ -52,57 +52,10 @@ public class PlayerBulletManager : SceneSingleton<PlayerBulletManager>
         GameObject newBullet = Instantiate(_bulletPrefab);
         PlayerBullet bullet = newBullet.GetComponent<PlayerBullet>();
         
-        newBullet.SetActive(false);
+        
         // _pool.Push()
         _pool.Push(bullet);
         return bullet;
     }
 
-    // public GameObject hootBullet(GameObject bulletPrefab, Vector3 bulletPos, Quaternion bulletRot)
-    // {
-    //     if (!bullets.ContainsKey(bulletPrefab))
-    //     {
-    //         bullets.Add(bulletPrefab,new Queue<GameObject>());
-    //     }
-    //
-    //     GameObject bullet;
-    //
-    //     if (bullets[bulletPrefab].Count > 0)
-    //     {
-    //         bullet = bullets[bulletPrefab].Dequeue();
-    //     }
-    //     else
-    //     {
-    //         bullet = Instantiate(bulletPrefab, transform);
-    //         bullet.name = bulletPrefab.name;
-    //     }
-    //
-    //     bullet.transform.position = bulletPos;
-    //     bullet.transform.rotation = bulletRot;
-    //     bullet.SetActive(true);
-    //
-    //     if (bullet.TryGetComponent(out IShootable shootable))
-    //     {
-    //         shootable.OnSpawn();
-    //     }
-    //     
-    //     return bullet;
-    // }
-
-    // public void DespawnBullet(GameObject bulletPrefab, GameObject bullet)
-    // {
-    //     if (!bullets.ContainsKey(bulletPrefab))
-    //     {
-    //         bullets.Add(bulletPrefab, new Queue<GameObject>());
-    //     }
-    //
-    //     if (bullet.TryGetComponent(out IShootable shootable))
-    //     {
-    //         shootable.OnDespawn();
-    //     }
-    //     
-    //     bullet.SetActive(false);
-    //     
-    //     bullets[bulletPrefab].Enqueue(bullet);
-    // }
 }
