@@ -8,11 +8,11 @@ public class PlayerMovement : MonoBehaviour
     
     [Header("회전 속도")]
     [SerializeField] private float _rotSpeed;
-
-    public bool isMoving => _dir != Vector3.zero;
     
     private Rigidbody _rigidbody;
     Vector3 _dir = Vector3.zero;
+    
+    public bool isMoving => _dir != Vector3.zero;
 
     private void Awake()
     {
