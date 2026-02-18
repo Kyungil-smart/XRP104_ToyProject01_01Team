@@ -41,14 +41,4 @@ public class PlayerAnimController : MonoBehaviour
             return;
         }
     }
-    // private void OnEnable()
-    // {
-    //     if(_playerController.playerCurrentHP <= 0 && !_isDie)
-    //     {
-    //         _isDie = true;
-    //         _animator.SetBool("isDie", true);
-    //         Destroy(gameObject, 2f);
-    //     }
-    // }
-
 }
