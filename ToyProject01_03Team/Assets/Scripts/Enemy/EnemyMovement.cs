@@ -26,6 +26,11 @@ public class EnemyMovement : MonoBehaviour
         _indexAddValue = 1;
     }
 
+    public void SetWaypoints(List<Vector3> waypoints)
+    {
+        _patrolWaypoints = waypoints;
+    }
+
     public void StartMove(Vector3 destination)
     {
         _agent.speed = _stats.MoveSpeed;

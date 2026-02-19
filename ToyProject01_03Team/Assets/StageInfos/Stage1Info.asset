@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7cd5788015e44cecbea346ab6b2c787, type: 3}
+  m_Name: Stage1Info
+  m_EditorClassIdentifier: 
+  <StageID>k__BackingField: 1
+  <Map>k__BackingField: {fileID: 7391700477154013929, guid: c3201cc74e08ca44e8737623e6998106, type: 3}
+  <Player>k__BackingField: {fileID: 1457373829014867892, guid: 84bd91ab86447a64d8818f278f3ae189, type: 3}
+  <PlayerStartPosition>k__BackingField: {x: 0, y: 0, z: -39.7}
+  <MonsterInfos>k__BackingField:
+  - EnemyPrefab: {fileID: 458756959566365255, guid: 29cd96374fec45c48b0070c651900b32, type: 3}
+    <PatrolWayPoints>k__BackingField:
+    - {x: -18.9, y: 0, z: -21}
+    - {x: 21.3, y: 0, z: -21}
+    - {x: 21.3, y: 0, z: 22.7}
+  - EnemyPrefab: {fileID: 458756959566365255, guid: 29cd96374fec45c48b0070c651900b32, type: 3}
+    <PatrolWayPoints>k__BackingField:
+    - {x: 21.1, y: 0, z: 21.5}
+    - {x: -19.6, y: 0, z: 21.5}
+    - {x: -19.6, y: 0, z: -21.1}

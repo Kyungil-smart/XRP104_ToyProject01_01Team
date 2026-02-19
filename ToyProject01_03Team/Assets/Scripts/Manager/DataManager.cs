@@ -3,17 +3,11 @@ using UnityEngine;
 
 public class DataManager : Singleton<DataManager>
 {
-    [field: SerializeField] public List<StageInfo> StageInfoList { get; private set; }
     [field: SerializeField] public List<Itembase> ItembaseList { get; private set; }
     
     private void Awake()
     {
         SingletonInit();
-    }
-
-    public void LoadStageInfo(int stageIndex)
-    {
-        Instantiate(StageInfoList[stageIndex]);
     }
 
     public void DropRandomItem(Transform dropPoint)

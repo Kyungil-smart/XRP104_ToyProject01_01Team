@@ -249,10 +249,10 @@ MonoBehaviour:
   _defaultHealth: 100
   _defaultMoveSpeed: 5
   <TurnSpeed>k__BackingField: 120
-  <DetectRange>k__BackingField: 12.7
-  <ViewAngle>k__BackingField: 247
-  <MissingRange>k__BackingField: 21.3
-  <AttackRange>k__BackingField: 9.4
+  <DetectRange>k__BackingField: 14.4
+  <ViewAngle>k__BackingField: 98
+  <MissingRange>k__BackingField: 23.4
+  <AttackRange>k__BackingField: 11.5
   <AttackTargetLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64

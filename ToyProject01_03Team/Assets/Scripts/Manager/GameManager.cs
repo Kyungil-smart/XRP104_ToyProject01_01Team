@@ -1,9 +1,15 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    [field: SerializeField] public int CurrentStage { get; set; }
+    [field: SerializeField] public StageInfoSO CurrentStage { get; set; }
+    private HashSet<EnemyController> _enemies = new HashSet<EnemyController>();
+    public bool HasRemainingEnemies => _enemies.Count > 0;
+    private float _startTime;
+    public float ElapsedTime => -(_startTime - Time.time);
+    
     public event Action OnGameStart;
     public event Action OnGamePause;
     public event Action OnGameResume;
@@ -25,6 +31,7 @@ public class GameManager : Singleton<GameManager>
     public void GameStart()
     {
         IsGameRunning = true;
+        _startTime = Time.time;
         OnGameStart?.Invoke();
     }
 
@@ -56,5 +63,15 @@ public class GameManager : Singleton<GameManager>
     {
         IsGameRunning = false;
         OnStageClear?.Invoke();
+    }
+    
+    public void AddEnemy(EnemyController enemy)
+    {
+        _enemies.Add(enemy);
+    }
+
+    public void RemoveEnemy(EnemyController enemy)
+    {
+        _enemies.Remove(enemy);
     }
 }
