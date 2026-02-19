@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -14,7 +15,7 @@ public class EnemyController : MonoBehaviour, IDamagable, ITargetable
 
     private void Awake() => Init();
     private void OnEnable() => ConnectEvents();
-    private void Start() => StageInfo.Instance.AddEnemy(this);
+    private void Start() => GameManager.Instance.AddEnemy(this);
     private void Update()
     {
         HandleState();
@@ -24,6 +25,11 @@ public class EnemyController : MonoBehaviour, IDamagable, ITargetable
     private void OnDisable() => DisconnectEvents();
 
     private void OnDrawGizmos() => DrawLineToDetectedTarget();
+
+    public void SetWayPoints(List<Vector3> wayPoints)
+    {
+        _movement.SetWaypoints(wayPoints);
+    }
 
     private void Init()
     {
@@ -89,7 +95,7 @@ public class EnemyController : MonoBehaviour, IDamagable, ITargetable
     public void Die()
     {
         StopAllCoroutines();
-        StageInfo.Instance.RemoveEnemy(this);
+        GameManager.Instance.RemoveEnemy(this);
         DataManager.Instance.DropRandomItem(transform);
         gameObject.SetActive(false);
         // Destroy(gameObject);

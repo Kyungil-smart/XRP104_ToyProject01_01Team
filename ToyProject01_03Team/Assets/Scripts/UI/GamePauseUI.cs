@@ -47,7 +47,7 @@ public class GamePauseUI : MonoBehaviour
 
     private void RefreshElapsedTimeText()
     {
-        _timeText.text = $"Elapsed Time : {StageInfo.Instance.ElapsedTime.ToString("0.00")} sec";
+        _timeText.text = $"Elapsed Time : {GameManager.Instance.ElapsedTime.ToString("0.00")} sec";
     }
 
     private void ToTitle()

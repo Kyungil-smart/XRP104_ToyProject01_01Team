@@ -1589,10 +1589,10 @@ MonoBehaviour:
       - m_Target: {fileID: 29845597}
         m_TargetAssemblyTypeName: StageSelection, Assembly-CSharp
         m_MethodName: OnClickStage
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 11400000, guid: e46fc1d78c1874bc1ba552fcdc6ae4cd, type: 2}
+          m_ObjectArgumentAssemblyTypeName: StageInfoSO, Assembly-CSharp
           m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 

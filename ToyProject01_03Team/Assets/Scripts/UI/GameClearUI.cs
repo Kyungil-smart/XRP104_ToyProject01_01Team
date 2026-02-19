@@ -32,7 +32,7 @@ public class GameClearUI : MonoBehaviour
 
     public void RefreshClearTime()
     {
-        _clearTime.text = $"Clear Time : {StageInfo.Instance.ElapsedTime.ToString("0.00")} sec";
+        _clearTime.text = $"Clear Time : {GameManager.Instance.ElapsedTime.ToString("0.00")} sec";
     }
 
     private void ToTitle()

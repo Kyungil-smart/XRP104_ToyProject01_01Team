@@ -3,9 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class StageSelection : MonoBehaviour
 {
-    public void OnClickStage(int stage)
+    public void OnClickStage(StageInfoSO stageInfo)
     {
-        GameManager.Instance.CurrentStage = stage;
+        GameManager.Instance.CurrentStage = stageInfo;
         SceneManager.LoadScene(2);
     }
 
